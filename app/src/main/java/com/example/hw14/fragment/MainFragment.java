@@ -28,6 +28,7 @@ import com.example.hw14.repository.RepositoryEP;
  */
 public class MainFragment extends Fragment {
 
+    public static final int REQUEST_CODE_DDELETE = 3;
     EditText mEditTextEnglish;
     EditText mEditTextPersian;
 
@@ -176,10 +177,20 @@ public class MainFragment extends Fragment {
                 shareWord();
                 break;
             }
+            case R.id.item_delete: {
+                deleteWord();
+                break;
+            }
             default:
                 return super.onOptionsItemSelected(item);
         }
         return true;
+    }
+
+    private void deleteWord() {
+        Alert add = new DeleteDialog();
+        add.setTargetFragment(this, REQUEST_CODE_DDELETE);
+        add.show(getFragmentManager(), "TAGe");
     }
 
     private void shareWord() {
@@ -203,17 +214,20 @@ public class MainFragment extends Fragment {
 
 
     private void addNewWord() {
-        DialogAdd add = new DialogAdd();
+        Alert add = new AddDialog();
         add.setTargetFragment(this, REQUEST_CODE_add);
-        add.show(getFragmentManager(), "TAG");
-    }
+        add.show(getFragmentManager(), "TAGe");
 
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (data == null || resultCode != Activity.RESULT_OK) {
             return;
         } else if (requestCode == REQUEST_CODE_add) {
+            initViewMenu();
+            updateRepository();
+        } else if (requestCode == REQUEST_CODE_DDELETE) {
             initViewMenu();
             updateRepository();
         }

@@ -28,6 +28,17 @@ public class RepositoryEP implements Reposible {
         return mRepository;
     }
 
+    public void deleteWord(String stringEnglish, String stringPersian) {
+        DB.delete(DataBaseWordsEP.COLS.TABLE_NAME,
+                DataBaseWordsEP.COLS.COL_ENGLISH +
+                        " =? and "
+                        + DataBaseWordsEP.COLS.COL_PERSIAN +
+                        " =? ",
+                new String[]{stringEnglish, stringPersian}
+        );
+        updateLists();
+    }
+
     //english -->persian
     @Override
     public String getTranslateEnglish(String stringEnglish) {

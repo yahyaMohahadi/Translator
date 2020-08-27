@@ -3,12 +3,10 @@ package com.example.hw14.fragment;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -19,14 +17,11 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.hw14.R;
-import com.example.hw14.repository.RepositoryEP;
 
-import java.util.zip.Inflater;
+public abstract class Alert extends DialogFragment {
 
-public class DialogAdd extends DialogFragment {
-
-    private EditText mEditTextPersian;
-    private EditText mEditTextEnglish;
+    protected EditText mEditTextPersianAlert;
+    protected EditText mEditTextEnglishAlert;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -37,8 +32,8 @@ public class DialogAdd extends DialogFragment {
 
     private void findView(View view) {
 
-        mEditTextPersian = view.findViewById(R.id.editText_alert_persian);
-        mEditTextEnglish = view.findViewById(R.id.editText_alert_english);
+        mEditTextPersianAlert = view.findViewById(R.id.editText_alert_persian);
+        mEditTextEnglishAlert = view.findViewById(R.id.editText_alert_english);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -48,13 +43,13 @@ public class DialogAdd extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = LayoutInflater.from(getActivity());
         View view = inflater.inflate(R.layout.alart_add_word, null);
-        builder.setTitle("Add new Word ");
-        builder.setIcon(R.drawable.ic_add);
+        builder.setTitle(getTitle());
+        builder.setIcon(getIcon());
         builder.setView(view);
-        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getOkString(), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                add();
+                doOrder();
                 setResult();
             }
         });
@@ -63,18 +58,23 @@ public class DialogAdd extends DialogFragment {
         return builder.create();
     }
 
+    protected abstract int getOkString() ;
+
+    protected abstract int getIcon();
+
+    protected abstract String getTitle();
+
     private void setResult() {
-       getTargetFragment().onActivityResult(
+        getTargetFragment().onActivityResult(
                 getTargetRequestCode(),
                 Activity.RESULT_OK,
                 new Intent());
         dismiss();
     }
 
-    private void add() {
-        RepositoryEP.newInstance(getActivity()).addTranslate(
-                mEditTextEnglish.getText().toString(),
+    protected abstract void doOrder();
+ /*     RepositoryEP.newInstance(getActivity()).addTranslate(
+            mEditTextEnglish.getText().toString(),
                 mEditTextPersian.getText().toString()
-        );
-    }
+        );*/
 }

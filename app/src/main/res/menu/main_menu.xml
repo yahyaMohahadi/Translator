@@ -12,4 +12,9 @@
         android:icon="@android:drawable/ic_input_add"
         android:title="add word"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/item_delete"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:title="delete a word"
+        app:showAsAction="never" />
 </menu>
